@@ -3,10 +3,15 @@ import { useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import { useTheme } from '../../hooks/useTheme';
 import Badge from '../common/Badge';
+import { useSelector, useDispatch } from 'react-redux';
+import { markAllRead } from '../../features/dashboard/dashboardSlice';
 
 const Navbar = ({ onMenuClick }) => {
   const { user, logout, isAdmin } = useAuth();
   const { theme, toggleTheme } = useTheme();
+  const notifications = useSelector((s) => s.dashboard?.notifications || []);
+const unreadCount = notifications.filter((n) => !n.read).length;
+const dispatch = useDispatch();
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const roleColors = { admin: 'danger', manager: 'warning', employee: 'info' };
@@ -14,12 +19,18 @@ const Navbar = ({ onMenuClick }) => {
   return (
     <header className="h-16 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 flex items-center px-4 gap-4 sticky top-0 z-30">
       {/* Hamburger (mobile) */}
-      <button
-        onClick={onMenuClick}
-        className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 lg:hidden"
-      >
-        <Menu size={20} />
-      </button>
+     <button
+  onClick={() => dispatch(markAllRead())}
+  className="relative p-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+  title="Mark all notifications as read"
+>
+  <Bell size={18} />
+  {unreadCount > 0 && (
+    <span className="absolute top-1 right-1 w-4 h-4 bg-red-500 rounded-full text-white text-[9px] font-bold flex items-center justify-center">
+      {unreadCount}
+    </span>
+  )}
+</button>
 
       {/* Brand */}
       <div className="flex items-center gap-2 font-bold text-primary-600 text-lg tracking-tight">
