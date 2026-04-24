@@ -38,7 +38,11 @@
 import axios from 'axios';
 import { TOKEN_KEY } from '../utils/constants';
 
-const baseURL = process.env.VITE_API_URL || 'http://localhost:5000/api';
+// const baseURL = process.env.VITE_API_URL || 'http://localhost:5000/api';
+// const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+const baseURL =
+  (typeof window !== 'undefined' && window.__VITE_API_URL__) ||
+  'http://localhost:5000/api';
 
 const axiosInstance = axios.create({
   baseURL,

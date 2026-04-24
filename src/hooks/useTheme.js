@@ -4,7 +4,7 @@ export const useTheme = () => {
   const [theme, setTheme] = useState(
     () => localStorage.getItem('ewms_theme') || 'light'
   );
-
+export { useThemeContext as useTheme } from '../context/ThemeContext';
   useEffect(() => {
     const root = document.documentElement;
     if (theme === 'dark') {
