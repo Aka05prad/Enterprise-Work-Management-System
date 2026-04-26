@@ -58,6 +58,7 @@ const mockLogin = (email, password) => {
   });
 };
 
+
 const mockSignup = (data) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {

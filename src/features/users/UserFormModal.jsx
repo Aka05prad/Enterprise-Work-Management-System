@@ -71,11 +71,11 @@ const UserFormModal = ({ isOpen, onClose, user = null }) => {
     <Modal isOpen={isOpen} onClose={onClose} title={isEdit ? 'Edit user' : 'Add new user'} size="md">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <Input
-          label="Full name" placeholder="e.g. Jane Smith"
+          id="name" label="Full name" placeholder="e.g. Jane Smith"
           error={errors.name?.message} {...register('name')}
         />
         <Input
-          label="Email address" type="email" placeholder="jane@company.com"
+           id="email" label="Email address" type="email" placeholder="jane@company.com"
           error={errors.email?.message} {...register('email')}
         />
 
@@ -108,7 +108,7 @@ const UserFormModal = ({ isOpen, onClose, user = null }) => {
 
         {!isEdit && (
           <Input
-            label="Temporary password" type="password" placeholder="Min 6 characters"
+             id="password" label="Temporary password" type="password" placeholder="Min 6 characters"
             error={errors.password?.message} {...register('password')}
           />
         )}

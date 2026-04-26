@@ -38,8 +38,9 @@ const TaskCard = ({ task, onClick, dragging = false }) => {
       </div>
 
       {/* Title */}
-      <p className="text-sm font-medium text-gray-800 dark:text-gray-200 leading-snug mb-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
-        {task.title}
+      <p data-testid="task-title" className="text-sm font-medium text-gray-800 dark:text-gray-200 leading-snug mb-2 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+        {/* {task.title} */}
+        {String(task.title)}
       </p>
 
       {/* Tags */}

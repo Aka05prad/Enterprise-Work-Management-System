@@ -24,10 +24,38 @@ const ProjectsPage = () => {
   const [filter,         setFilter]         = useState('all');
   const debouncedSearch = useDebounce(search, 350);
 
+//   jest.mock('../../features/projects/projectsSlice', () => {
+//   const original = jest.requireActual('../../features/projects/projectsSlice');
+
+//   return {
+//     ...original,
+
+//     createProject: (data) => async (dispatch) => {
+//       dispatch({ type: 'projects/createProject/pending' });
+
+//       await Promise.resolve();
+
+//       dispatch({
+//         type: 'projects/createProject/fulfilled',
+//         payload: {
+//           id: 'p123',
+//           ...data,
+//         },
+//       });
+//     },
+//   };
+// });
+
+  // useEffect(() => {
+  //   dispatch(fetchProjects());
+  //   dispatch(fetchTasks());
+  // }, []);
   useEffect(() => {
+  if (!projects || projects.length === 0) {
     dispatch(fetchProjects());
-    dispatch(fetchTasks());
-  }, []);
+  }
+  dispatch(fetchTasks());
+}, []);
 
   const filtered = projects.filter((p) => {
     const matchSearch = p.name.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
@@ -78,6 +106,7 @@ const ProjectsPage = () => {
         <div className="flex items-center gap-1.5 flex-wrap">
           {FILTERS.map((f) => (
             <button
+            // aria-label="New project"
               key={f}
               onClick={() => setFilter(f)}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium capitalize transition-colors ${

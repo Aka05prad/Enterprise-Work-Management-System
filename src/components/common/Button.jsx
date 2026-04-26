@@ -16,6 +16,7 @@ const sizes = {
 const Button = ({
   children,
   variant = 'primary',
+  type = 'button', 
   size = 'md',
   loading = false,
   disabled = false,
@@ -24,6 +25,7 @@ const Button = ({
 }) => {
   return (
     <button
+      type={type}
       disabled={disabled || loading}
       className={`
         inline-flex items-center justify-center gap-2 font-medium rounded-lg

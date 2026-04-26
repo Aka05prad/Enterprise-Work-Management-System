@@ -28,6 +28,7 @@ const LoginPage = () => {
     return () => clearError();
   }, [isAuthenticated]);
 
+ 
   const onSubmit = (data) => dispatch(loginUser(data));
 
   // Demo credentials helper

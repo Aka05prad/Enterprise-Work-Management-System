@@ -63,7 +63,7 @@ const ProjectFormModal = ({ isOpen, onClose, project = null }) => {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title={isEdit ? 'Edit project' : 'New project'} size="md">
+    <Modal isOpen={isOpen} onClose={onClose} title={isEdit ? 'Edit project' : 'Create project'} size="md">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <Input label="Project name" placeholder="e.g. Apollo Redesign" error={errors.name?.message} {...register('name')} />
         <div className="flex flex-col gap-1">

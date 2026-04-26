@@ -27,10 +27,16 @@ const TasksPage = () => {
   const [editingTask,  setEditingTask]  = useState(null);
   const debouncedSearch = useDebounce(search, 350);
 
+  // useEffect(() => {
+  //   dispatch(fetchTasks());
+  //   dispatch(fetchProjects());
+  // }, []);
   useEffect(() => {
+  if (!tasks || tasks.length === 0) {
     dispatch(fetchTasks());
-    dispatch(fetchProjects());
-  }, []);
+  }
+  dispatch(fetchProjects());
+}, []);
 
   const filtered = tasks.filter((t) => {
     const matchSearch = t.title.toLowerCase().includes(debouncedSearch.toLowerCase());
@@ -41,6 +47,7 @@ const TasksPage = () => {
 
   const pill = (val, current, set, label) => (
     <button
+    // aria-label="New task"
       key={val}
       onClick={() => set(val)}
       className={`px-3 py-1.5 rounded-lg text-xs font-medium capitalize transition-colors ${

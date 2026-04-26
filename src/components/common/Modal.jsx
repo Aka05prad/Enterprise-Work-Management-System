@@ -34,6 +34,7 @@ const Modal = ({ isOpen, onClose, title, children, size = 'md' }) => {
             {title}
           </h3>
           <button
+          // aria-label="Close modal"
             onClick={onClose}
             className="p-1.5 rounded-lg text-gray-400 hover:text-gray-600 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
           >
