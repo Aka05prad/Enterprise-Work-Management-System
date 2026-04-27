@@ -10,12 +10,14 @@ import ProjectCard from './ProjectCard';
 import ProjectFormModal from './ProjectFormModal';
 import ProjectDetail from './ProjectDetail';
 import { useDebounce } from '../../hooks/useDebounce';
+import { useAuth } from '../../hooks/useAuth';
 
 const FILTERS = ['all', 'active', 'on_hold', 'completed', 'cancelled'];
 
 const ProjectsPage = () => {
   const dispatch  = useDispatch();
   const { list: projects, loading } = useSelector((s) => s.projects);
+  const { user, isAdmin, isManager } = useAuth();
 
   const [formOpen,       setFormOpen]       = useState(false);
   const [editingProject, setEditingProject] = useState(null);
@@ -24,32 +26,7 @@ const ProjectsPage = () => {
   const [filter,         setFilter]         = useState('all');
   const debouncedSearch = useDebounce(search, 350);
 
-//   jest.mock('../../features/projects/projectsSlice', () => {
-//   const original = jest.requireActual('../../features/projects/projectsSlice');
 
-//   return {
-//     ...original,
-
-//     createProject: (data) => async (dispatch) => {
-//       dispatch({ type: 'projects/createProject/pending' });
-
-//       await Promise.resolve();
-
-//       dispatch({
-//         type: 'projects/createProject/fulfilled',
-//         payload: {
-//           id: 'p123',
-//           ...data,
-//         },
-//       });
-//     },
-//   };
-// });
-
-  // useEffect(() => {
-  //   dispatch(fetchProjects());
-  //   dispatch(fetchTasks());
-  // }, []);
   useEffect(() => {
   if (!projects || projects.length === 0) {
     dispatch(fetchProjects());
@@ -57,12 +34,28 @@ const ProjectsPage = () => {
   dispatch(fetchTasks());
 }, []);
 
-  const filtered = projects.filter((p) => {
-    const matchSearch = p.name.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
+  // const filtered = projects.filter((p) => {
+  //   const matchSearch = p.name.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
+  //     p.description.toLowerCase().includes(debouncedSearch.toLowerCase());
+  //   const matchFilter = filter === 'all' || p.status === filter;
+  //   return matchSearch && matchFilter;
+  // });
+  const visibleProjects = isAdmin
+  ? projects                                                    // Admin sees all
+  : isManager
+    ? projects.filter(p =>                                      // Manager sees managed + member
+        p.manager?.id === user.id ||
+        p.members?.some(m => m.id === user.id)
+      )
+    : projects.filter(p =>                                      // Employee sees only member of
+        p.members?.some(m => m.id === user.id)
+      );
+
+// Use visibleProjects instead of projects in your filtered variable
+const filtered = visibleProjects.filter((p) => { const matchSearch = p.name.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
       p.description.toLowerCase().includes(debouncedSearch.toLowerCase());
     const matchFilter = filter === 'all' || p.status === filter;
-    return matchSearch && matchFilter;
-  });
+    return matchSearch && matchFilter; });
 
   const handleEdit = (project) => {
     setEditingProject(project);

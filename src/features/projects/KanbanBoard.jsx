@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { DragDropContext, Droppable, Draggable } from '@hello-pangea/dnd';
 import { useDispatch } from 'react-redux';
+import { useAuth } from '../../hooks/useAuth';
 import { Plus } from 'lucide-react';
 import { moveTask } from '../tasks/tasksSlice';
 import TaskCard from '../tasks/TaskCard';
@@ -17,6 +18,7 @@ const COLUMNS = [
 
 const KanbanBoard = ({ tasks, projectId }) => {
   const dispatch = useDispatch();
+  const { user, isAdmin, isManager } = useAuth();
   const [selectedTask,  setSelectedTask]  = useState(null);
   const [editingTask,   setEditingTask]   = useState(null);
   const [detailOpen,    setDetailOpen]    = useState(false);
@@ -25,15 +27,39 @@ const KanbanBoard = ({ tasks, projectId }) => {
 
   const tasksByStatus = (status) => tasks.filter((t) => t.status === status);
 
-  const onDragEnd = (result) => {
-    const { destination, source, draggableId } = result;
-    if (!destination) return;
-    if (destination.droppableId === source.droppableId && destination.index === source.index) return;
+  // const onDragEnd = (result) => {
+  //   const { destination, source, draggableId } = result;
+  //   if (!destination) return;
+  //   if (destination.droppableId === source.droppableId && destination.index === source.index) return;
 
-    const newStatus = destination.droppableId;
-    dispatch(moveTask({ id: draggableId, status: newStatus }));
-    toast.success(`Task moved to ${COLUMNS.find((c) => c.id === newStatus)?.label}`);
-  };
+  //   const newStatus = destination.droppableId;
+  //   dispatch(moveTask({ id: draggableId, status: newStatus }));
+  //   toast.success(`Task moved to ${COLUMNS.find((c) => c.id === newStatus)?.label}`);
+  // };/
+  const onDragEnd = (result) => {
+  const { destination, source, draggableId } = result;
+  if (!destination) return;
+  if (
+    destination.droppableId === source.droppableId &&
+    destination.index === source.index
+  ) return;
+
+  // ── Role check ────────────────────────────────────────────────
+  // Employees can only move tasks assigned to them
+  if (!isAdmin && !isManager) {
+    const task = tasks.find((t) => t.id === draggableId);
+    if (!task) return;
+    if (task.assignee?.id !== user?.id) {
+      toast.error('You can only move tasks assigned to you');
+      return;
+    }
+  }
+  // ─────────────────────────────────────────────────────────────
+
+  const newStatus = destination.droppableId;
+  dispatch(moveTask({ id: draggableId, status: newStatus }));
+  toast.success(`Task moved to ${COLUMNS.find((c) => c.id === newStatus)?.label}`);
+};
 
   const handleAddTask = (status) => {
     setNewTaskStatus(status);

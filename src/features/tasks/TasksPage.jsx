@@ -10,9 +10,12 @@ import TaskCard from './TaskCard';
 import TaskFormModal from './TaskFormModal';
 import TaskDetailModal from './TaskDetailModal';
 import { useDebounce } from '../../hooks/useDebounce';
+import { useAuth } from '../../hooks/useAuth';
 
 const STATUS_FILTERS = ['all', 'todo', 'in_progress', 'in_review', 'done'];
 const TYPE_FILTERS   = ['all', 'feature', 'bug', 'improvement'];
+
+const { user, isAdmin, isManager } = useAuth();
 
 const TasksPage = () => {
   const dispatch = useDispatch();
@@ -27,10 +30,7 @@ const TasksPage = () => {
   const [editingTask,  setEditingTask]  = useState(null);
   const debouncedSearch = useDebounce(search, 350);
 
-  // useEffect(() => {
-  //   dispatch(fetchTasks());
-  //   dispatch(fetchProjects());
-  // }, []);
+  
   useEffect(() => {
   if (!tasks || tasks.length === 0) {
     dispatch(fetchTasks());
@@ -38,13 +38,29 @@ const TasksPage = () => {
   dispatch(fetchProjects());
 }, []);
 
-  const filtered = tasks.filter((t) => {
-    const matchSearch = t.title.toLowerCase().includes(debouncedSearch.toLowerCase());
+  // const filtered = tasks.filter((t) => {
+  //   const matchSearch = t.title.toLowerCase().includes(debouncedSearch.toLowerCase());
+  //   const matchStatus = statusFilter === 'all' || t.status === statusFilter;
+  //   const matchType   = typeFilter   === 'all' || t.type   === typeFilter;
+  //   return matchSearch && matchStatus && matchType;
+  // });
+const visibleTasks = isAdmin
+  ? tasks
+  : isManager
+    ? tasks.filter(t =>
+        t.assignee?.id === user.id ||
+        t.reporter?.id === user.id  ||
+        projects.find(p =>
+          p.id === t.projectId &&
+          (p.manager?.id === user.id || p.members?.some(m => m.id === user.id))
+        )
+      )
+    : tasks.filter(t => t.assignee?.id === user.id);
+
+    const filtered = visibleProjects.filter((p) => {  const matchSearch = t.title.toLowerCase().includes(debouncedSearch.toLowerCase());
     const matchStatus = statusFilter === 'all' || t.status === statusFilter;
     const matchType   = typeFilter   === 'all' || t.type   === typeFilter;
-    return matchSearch && matchStatus && matchType;
-  });
-
+    return matchSearch && matchStatus && matchType; });
   const pill = (val, current, set, label) => (
     <button
     // aria-label="New task"

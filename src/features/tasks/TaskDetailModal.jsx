@@ -34,7 +34,8 @@ const statusConfig = {
 
 const TaskDetailModal = ({ isOpen, onClose, task, onEdit }) => {
   const dispatch          = useDispatch();
-  const { user, isAdmin } = useAuth();
+  // const { user, isAdmin } = useAuth();
+  const { user, isAdmin, isManager } = useAuth();
   const [comment, setComment] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
@@ -65,7 +66,7 @@ const TaskDetailModal = ({ isOpen, onClose, task, onEdit }) => {
             <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 leading-snug flex-1">
               {task.title}
             </h2>
-            <div className="flex items-center gap-1.5 shrink-0">
+            {/* <div className="flex items-center gap-1.5 shrink-0">
               <button
                 onClick={onEdit}
                 className="p-1.5 rounded-lg text-gray-400 hover:text-primary-600 hover:bg-primary-50 dark:hover:bg-primary-900/30 transition-colors"
@@ -80,7 +81,41 @@ const TaskDetailModal = ({ isOpen, onClose, task, onEdit }) => {
                   <Trash2 size={15} />
                 </button>
               )}
-            </div>
+            </div> */}
+            {/* ── Role-based permissions ─────────────────────────── */}
+{(() => {
+  const canEdit =
+    isAdmin ||
+    isManager ||
+    task.assignee?.id === user?.id;
+
+  const canDelete =
+    isAdmin ||
+    (isManager && task.reporter?.id === user?.id);
+
+  return (
+    <div className="flex items-center gap-1.5 shrink-0">
+      {canEdit && (
+        <button
+          onClick={onEdit}
+          title="Edit task"
+          className="p-1.5 rounded-lg text-gray-400 hover:text-primary-600 hover:bg-primary-50 dark:hover:bg-primary-900/30 transition-colors"
+        >
+          <Edit2 size={15} />
+        </button>
+      )}
+      {canDelete && (
+        <button
+          onClick={handleDelete}
+          title="Delete task"
+          className="p-1.5 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors"
+        >
+          <Trash2 size={15} />
+        </button>
+      )}
+    </div>
+  );
+})()}
           </div>
 
           {/* Badges row */}

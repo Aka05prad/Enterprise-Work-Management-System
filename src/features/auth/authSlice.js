@@ -59,6 +59,33 @@ const mockLogin = (email, password) => {
 };
 
 
+// const mockSignup = (data) => {
+//   return new Promise((resolve, reject) => {
+//     setTimeout(() => {
+//       const exists = MOCK_USERS.find((u) => u.email === data.email);
+//       if (exists) {
+//         reject(new Error('Email already registered'));
+//       } else {
+//         const newUser = {
+//           id: String(MOCK_USERS.length + 1),
+//           name: data.name,
+//           email: data.email,
+//           role: 'employee',
+//           avatar: null,
+//           department: data.department || 'General',
+//           lastActive: new Date().toISOString(),
+//           status: 'active',
+//         };
+//         MOCK_USERS.push({ ...newUser, password: data.password });
+//         resolve({
+//           user: newUser,
+//           token: `mock-jwt-token-${newUser.id}-${Date.now()}`,
+//         });
+//       }
+//     }, 800);
+//   });
+// };
+
 const mockSignup = (data) => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
@@ -67,18 +94,18 @@ const mockSignup = (data) => {
         reject(new Error('Email already registered'));
       } else {
         const newUser = {
-          id: String(MOCK_USERS.length + 1),
-          name: data.name,
-          email: data.email,
-          role: 'employee',
-          avatar: null,
+          id:         String(MOCK_USERS.length + 1),
+          name:       data.name,
+          email:      data.email,
+          role:       data.role || 'employee',   // ← use role from form
+          avatar:     null,
           department: data.department || 'General',
           lastActive: new Date().toISOString(),
-          status: 'active',
+          status:     'active',
         };
         MOCK_USERS.push({ ...newUser, password: data.password });
         resolve({
-          user: newUser,
+          user:  newUser,
           token: `mock-jwt-token-${newUser.id}-${Date.now()}`,
         });
       }
