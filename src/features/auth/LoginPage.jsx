@@ -19,9 +19,15 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const { isAuthenticated, loading, error, clearError } = useAuth();
 
+  // const { register, handleSubmit, formState: { errors } } = useForm({
+  //   resolver: yupResolver(schema),
+  // });
   const { register, handleSubmit, formState: { errors } } = useForm({
-    resolver: yupResolver(schema),
-  });
+  resolver: yupResolver(schema),
+  mode: 'onSubmit',
+  reValidateMode: 'onChange',
+  defaultValues: { email: '', password: '' },
+});
 
   useEffect(() => {
     if (isAuthenticated) navigate('/dashboard', { replace: true });

@@ -25,9 +25,17 @@ const SignupPage = () => {
   const navigate = useNavigate();
   const { isAuthenticated, loading, error, clearError } = useAuth();
 
-  const { register, handleSubmit, formState: { errors } } = useForm({
-    resolver: yupResolver(schema),
-  });
+  // const { register, handleSubmit, formState: { errors } } = useForm({
+  //   resolver: yupResolver(schema),
+  // });
+  const { register, handleSubmit, reset, formState: { errors } } = useForm({
+  resolver: yupResolver(schema),
+  mode: 'onSubmit',        // ← only validate on submit
+  reValidateMode: 'onChange', // ← re-validate on change after first submit
+  defaultValues: {
+    name: '', email: '', department: '', password: '', confirmPassword: '',
+  },
+});
 
   useEffect(() => {
     if (isAuthenticated) navigate('/dashboard', { replace: true });
