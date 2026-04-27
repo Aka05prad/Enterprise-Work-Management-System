@@ -15,12 +15,11 @@ import { useAuth } from '../../hooks/useAuth';
 const STATUS_FILTERS = ['all', 'todo', 'in_progress', 'in_review', 'done'];
 const TYPE_FILTERS   = ['all', 'feature', 'bug', 'improvement'];
 
-const { user, isAdmin, isManager } = useAuth();
-
 const TasksPage = () => {
   const dispatch = useDispatch();
   const { list: tasks, loading } = useSelector((s) => s.tasks);
 
+  const { user, isAdmin, isManager } = useAuth();
   const [search,       setSearch]       = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [typeFilter,   setTypeFilter]   = useState('all');
@@ -57,10 +56,11 @@ const visibleTasks = isAdmin
       )
     : tasks.filter(t => t.assignee?.id === user.id);
 
-    const filtered = visibleProjects.filter((p) => {  const matchSearch = t.title.toLowerCase().includes(debouncedSearch.toLowerCase());
+    const filtered = visibleTasks.filter((t) => {  const matchSearch = t.title.toLowerCase().includes(debouncedSearch.toLowerCase());
     const matchStatus = statusFilter === 'all' || t.status === statusFilter;
     const matchType   = typeFilter   === 'all' || t.type   === typeFilter;
     return matchSearch && matchStatus && matchType; });
+
   const pill = (val, current, set, label) => (
     <button
     // aria-label="New task"
