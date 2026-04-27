@@ -42,19 +42,47 @@ const Sidebar = ({ isOpen, onClose }) => {
         `}
       >
         {/* Sidebar header */}
-        <div className="h-16 flex items-center justify-between px-4 border-b border-gray-200 dark:border-gray-700">
-          <div className="flex items-center gap-2 font-bold text-primary-600 text-lg">
+        {/* <div className="h-16 flex items-center justify-between px-4 border-b border-gray-200 dark:border-gray-700"> */}
+          {/* <div className="flex items-center gap-2 font-bold text-primary-600 text-lg">
             <div className="w-7 h-7 bg-primary-600 rounded-lg flex items-center justify-center">
               <span className="text-white text-xs font-bold">EW</span>
             </div>
             EWMS
+          </div> */}
+            <div className="h-16 flex items-center justify-between px-4 border-b border-white/10">
+           <div className="flex items-center gap-3 font-semibold tracking-tight">
+          <div className="
+            w-9 h-9 rounded-xl
+            bg-gradient-to-br from-indigo-500 via-purple-500 to-cyan-500
+            flex items-center justify-center
+            text-white text-sm font-bold
+            shadow-glow
+          ">
+            TF
           </div>
-          <button
+
+          <span className="text-lg gradient-text">
+            TaskForge
+          </span>
+        </div>
+          {/* <button
             onClick={onClose}
             className="p-1.5 rounded-lg text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 lg:hidden"
           >
             <X size={16} />
-          </button>
+          </button> */}
+            <button
+          onClick={onClose}
+          className="
+            p-1.5 rounded-xl
+            text-slate-400
+            hover:bg-white/20 dark:hover:bg-white/10
+            transition-all duration-200
+            lg:hidden
+          "
+        >
+          <X size={16} />
+        </button>
         </div>
 
         {/* Nav links */}

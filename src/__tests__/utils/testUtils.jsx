@@ -109,3 +109,8 @@ export const renderWithProviders = (
   return { store, ...render(ui, { wrapper: Wrapper, ...options }) };
 };
 
+describe('testUtils', () => {
+  it('exports renderWithProviders', () => {
+    expect(typeof renderWithProviders).toBe('function');
+  });
+});

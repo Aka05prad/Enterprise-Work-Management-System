@@ -9,12 +9,12 @@ describe('Badge component', () => {
 
   it('applies success variant — green classes', () => {
     const { container } = render(<Badge variant="success">done</Badge>);
-    expect(container.firstChild.className).toMatch(/green/);
+    expect(container.firstChild.className).toMatch(/emerald/);
   });
 
   it('applies danger variant — red classes', () => {
     const { container } = render(<Badge variant="danger">overdue</Badge>);
-    expect(container.firstChild.className).toMatch(/red/);
+    expect(container.firstChild.className).toMatch(/rose/);
   });
 
   it('applies warning variant — yellow classes', () => {

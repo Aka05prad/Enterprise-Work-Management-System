@@ -9,11 +9,11 @@ describe('Badge', () => {
 
   it('applies danger variant class', () => {
     const { container } = render(<Badge variant="danger">overdue</Badge>);
-    expect(container.firstChild.className).toMatch(/red/);
+    expect(container.firstChild.className).toMatch(/rose/);
   });
 
   it('applies success variant class', () => {
     const { container } = render(<Badge variant="success">done</Badge>);
-    expect(container.firstChild.className).toMatch(/green/);
+    expect(container.firstChild.className).toMatch(/emerald/);
   });
 });

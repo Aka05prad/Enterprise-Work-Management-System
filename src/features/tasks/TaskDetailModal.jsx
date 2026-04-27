@@ -66,22 +66,7 @@ const TaskDetailModal = ({ isOpen, onClose, task, onEdit }) => {
             <h2 className="text-lg font-bold text-gray-900 dark:text-gray-100 leading-snug flex-1">
               {task.title}
             </h2>
-            {/* <div className="flex items-center gap-1.5 shrink-0">
-              <button
-                onClick={onEdit}
-                className="p-1.5 rounded-lg text-gray-400 hover:text-primary-600 hover:bg-primary-50 dark:hover:bg-primary-900/30 transition-colors"
-              >
-                <Edit2 size={15} />
-              </button>
-              {isAdmin && (
-                <button
-                  onClick={handleDelete}
-                  className="p-1.5 rounded-lg text-gray-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors"
-                >
-                  <Trash2 size={15} />
-                </button>
-              )}
-            </div> */}
+            
             {/* ── Role-based permissions ─────────────────────────── */}
 {(() => {
   const canEdit =

@@ -2,20 +2,29 @@ import { TrendingUp, TrendingDown, Minus } from 'lucide-react';
 
 const StatsCard = ({ title, value, subtitle, icon: Icon, iconColor, trend, trendValue }) => {
   const trendConfig = {
-    up:   { icon: TrendingUp,   color: 'text-green-600 dark:text-green-400',  bg: 'bg-green-50 dark:bg-green-900/30'  },
-    down: { icon: TrendingDown, color: 'text-red-600 dark:text-red-400',      bg: 'bg-red-50 dark:bg-red-900/30'      },
-    flat: { icon: Minus,        color: 'text-gray-500 dark:text-gray-400',    bg: 'bg-gray-50 dark:bg-gray-800'       },
+    up:   { icon: TrendingUp,   color: 'text-emerald-500', bg: 'bg-emerald-500/10' },
+    down: { icon: TrendingDown, color: 'text-rose-500',    bg: 'bg-rose-500/10' },
+    flat: { icon: Minus,        color: 'text-slate-400',   bg: 'bg-slate-500/10' },
   };
+
   const t = trendConfig[trend || 'flat'];
   const TrendIcon = t.icon;
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-5 flex flex-col gap-4 hover:shadow-md transition-shadow duration-200">
-      {/* Top row */}
-      <div className="flex items-start justify-between">
-        <div className={`p-2.5 rounded-xl ${iconColor || 'bg-primary-50 dark:bg-primary-900/30'}`}>
-          {Icon && <Icon size={20} className={iconColor ? 'text-white' : 'text-primary-600 dark:text-primary-400'} />}
+    <div className="glass card-hover p-5 flex flex-col gap-4 relative overflow-hidden">
+
+      {/* 🌈 subtle glow */}
+      <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/5 via-transparent to-cyan-500/5 pointer-events-none" />
+
+      {/* Top Row */}
+      <div className="flex items-start justify-between relative z-10">
+
+        {/* Icon */}
+        <div className={`p-3 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 shadow-glow`}>
+          {Icon && <Icon size={18} className="text-white" />}
         </div>
+
+        {/* Trend */}
         {trend && (
           <div className={`flex items-center gap-1 px-2 py-1 rounded-lg text-xs font-medium ${t.color} ${t.bg}`}>
             <TrendIcon size={12} />
@@ -24,14 +33,20 @@ const StatsCard = ({ title, value, subtitle, icon: Icon, iconColor, trend, trend
         )}
       </div>
 
-      {/* Value */}
-      <div>
-        <p className="text-3xl font-bold text-gray-900 dark:text-white tracking-tight">
+      {/* Value Section */}
+      <div className="relative z-10">
+        <p className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
           {value}
         </p>
-        <p className="text-sm font-medium text-gray-600 dark:text-gray-400 mt-1">{title}</p>
+
+        <p className="text-sm mt-1 text-slate-600 dark:text-slate-400">
+          {title === "Projects" ? "Workspaces" : title === "Tasks" ? "Work Units" : title}
+        </p>
+
         {subtitle && (
-          <p className="text-xs text-gray-400 dark:text-gray-500 mt-0.5">{subtitle}</p>
+          <p className="text-xs text-slate-400 mt-1">
+            {subtitle}
+          </p>
         )}
       </div>
     </div>

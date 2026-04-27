@@ -33,12 +33,15 @@ describe('Button component', () => {
 
   it('applies primary variant classes by default', () => {
     const { container } = render(<Button>Primary</Button>);
-    expect(container.firstChild.className).toMatch(/bg-primary/);
+    // expect(container.firstChild.className).toMatch(/bg-primary/);
+    expect(container.firstChild.className).toMatch(/indigo/);
+
   });
 
   it('applies danger variant classes', () => {
     const { container } = render(<Button variant="danger">Delete</Button>);
-    expect(container.firstChild.className).toMatch(/bg-red/);
+    // expect(container.firstChild.className).toMatch(/bg-red/);
+    expect(container.firstChild.className).toMatch(/rose/);
   });
 
   it('applies secondary variant classes', () => {
